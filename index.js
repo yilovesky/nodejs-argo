@@ -615,7 +615,12 @@ async function startserver() {
     console.error('Error in startserver:', error);
   }
 }
-startserver().catch(error => {
-  console.error('Unhandled error in startserver:', error);
+// 启动主逻辑
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`http server is running on port:${PORT}!`);
+  
+  // 先监听端口，再跑后台逻辑，防止 Apply.Build 报 503
+  startserver().catch(error => {
+    console.error('Error in startserver:', error);
+  });
 });
-app.listen(PORT, () => console.log(`http server is running on port:${PORT}!`));
