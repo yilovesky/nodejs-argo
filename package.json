@@ -1,13 +1,21 @@
 {
   "name": "nodejs-argo",
-  "version": "1.0.0",
-  "type": "commonjs", 
+  "version": "1,0,0",
+  "description": "Thsi is a node project",
   "main": "index.js",
+  "author": "eooce",
+  "repository": "",
+  "license": "MIT",
+  "private": false,
   "scripts": {
-    "start": "sh ./start.sh"
+    "dev": "node index.js",
+    "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "axios": "latest"
+    "axios": "latest",
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=14"
   }
 }
