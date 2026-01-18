@@ -2,6 +2,7 @@
   "name": "nodejs-argo",
   "version": "1,0,0",
   "description": "Thsi is a node project",
+  "type": "commonjs",
   "main": "index.js",
   "author": "eooce",
   "repository": "",
