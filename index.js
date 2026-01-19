@@ -624,3 +624,8 @@ app.listen(PORT, '0.0.0.0', () => {
     console.error('Error in startserver:', error);
   });
 });
+if (typeof Deno !== "undefined") {
+  Deno.cron("Keep-Alive", "*/10 * * * *", () => {
+    console.log("Deno 内部唤醒：进程保温中...");
+  });
+}
