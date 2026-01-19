@@ -624,33 +624,3 @@ app.listen(PORT, '0.0.0.0', () => {
     console.error('Error in startserver:', error);
   });
 });
-
-
-if (typeof Deno !== "undefined") {
-  console.log("检测到 Deno 环境，激活强力保活模式...");
-
-  // 定义一个高频自访问函数
-  const hardKeepAlive = async () => {
-    const url = PROJECT_URL || `http://localhost:${PORT}`;
-    try {
-      // 增加一个随机参数防止被网关缓存请求
-      await axios.get(`${url}?t=${Date.now()}`, { timeout: 5000 });
-      console.log(`[Keep-Alive] 强力心跳成功: ${new Date().toLocaleTimeString()}`);
-    } catch (e) {
-      console.log(`[Keep-Alive] 心跳震荡: ${e.message}`);
-    }
-  };
-
-  // 1. 尝试注册原生 Cron (作为二层保险)
-  if (typeof Deno.cron === "function") {
-    try {
-      Deno.cron("Maintain-Instance", "*/2 * * * *", () => {
-        hardKeepAlive();
-      });
-    } catch (e) {}
-  }
-
-  // 30秒掉线说明回收极快，我们用15秒一次的心跳死守
-  // 这种频率会消耗更多配额，但能有效防止哪吒进程被挂起
-  setInterval(hardKeepAlive, 15000); 
-}
