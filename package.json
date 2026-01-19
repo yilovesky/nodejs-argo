@@ -1,6 +1,7 @@
 {
-  "name": "nodejs-argo",
+  "name": "baico120",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "start": "node index.js"
   },
@@ -9,6 +10,6 @@
     "express": "^4.18.2"
   },
   "engines": {
-    "node": ">=18"
+    "node": "18.x"
   }
 }
