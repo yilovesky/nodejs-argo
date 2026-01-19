@@ -1,0 +1,14 @@
+name: NK Auto Reboot
+
+on:
+  schedule:
+    - cron: '*/50 * * * *' # 每 50 分钟自动运行一次
+  workflow_dispatch: # 允许你手动点击按钮触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger AppVeyor Webhook
+        run: |
+          curl -X POST "https://ci.appveyor.com/api/github/webhook?id=5dsrsoe1ub09t44f" -d ""
