@@ -2,17 +2,20 @@ name: NK Auto Reboot (AppVeyor Branch)
 
 on:
   schedule:
-    - cron: '*/50 * * * *'
-  workflow_dispatch:
+    - cron: '*/50 * * * *' # 每 50 分钟自动跳动一次
+  workflow_dispatch: # 允许你随时手动点按钮测试
 
 jobs:
   reboot_task:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger AppVeyor
+      - name: Trigger AppVeyor Build
         run: |
-          curl -v -X POST \
+          curl -s -X POST "https://ci.appveyor.com/api/builds" \
+            -H "Authorization: Bearer ${{ secrets.APPVEYOR_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -H "Accept: application/json" \
-            -d "{}" \
-            "https://ci.appveyor.com/api/github/webhook?id=5dsrsoe1ub09t44f"
+            -d "{
+                  \"accountName\": \"baico\",
+                  \"projectSlug\": \"nodejs-argo\",
+                  \"branch\": \"appveyor\"
+                }"
