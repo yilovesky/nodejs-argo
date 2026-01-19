@@ -1,4 +1,15 @@
-- name: Trigger AppVeyor via GitHub IP
+name: NK Auto Reboot (AppVeyor Branch)
+
+on:
+  schedule:
+    - cron: '*/50 * * * *'
+  workflow_dispatch:
+
+jobs:
+  reboot_task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger AppVeyor
         run: |
           curl -v -X POST \
             -H "Content-Type: application/json" \
