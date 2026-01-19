@@ -1,18 +1,10 @@
-name: NK Auto Reboot (AppVeyor Branch)
-
-on:
-  schedule:
-    - cron: '*/50 * * * *'
-  workflow_dispatch:
-
-jobs:
-  reboot_task:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger AppVeyor
+- name: Trigger AppVeyor via Official API
         run: |
-          curl -v -X POST \
+          curl -v -X POST "https://ci.appveyor.com/api/builds" \
+            -H "Authorization: Bearer ${{ secrets.APPVEYOR_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -H "Accept: application/json" \
-            -d "{}" \
-            "https://ci.appveyor.com/api/github/webhook?id=5dsrsoe1ub09t44f"
+            -d "{
+                  \"accountName\": \"baico\",
+                  \"projectSlug\": \"nodejs-argo\",
+                  \"branch\": \"appveyor\"
+                }"
