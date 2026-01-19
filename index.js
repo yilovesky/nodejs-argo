@@ -624,14 +624,28 @@ app.listen(PORT, '0.0.0.0', () => {
     console.error('Error in startserver:', error);
   });
 });
-if (typeof Deno !== "undefined" && typeof Deno.cron === "function") {
-  try {
-    Deno.cron("Keep-Alive-Task", "*/10 * * * *", () => {
-      console.log("Deno Cron 触发：保持实例活跃");
-    });
-  } catch (e) {
-    console.error("Deno Cron 启动失败:", e.message);
+
+
+if (typeof Deno !== "undefined") {
+  console.log("检测到 Deno 环境，尝试启动保活插件...");
+  
+  // 1. 尝试使用 Deno.cron (如果平台开启了该功能)
+  if (typeof Deno.cron === "function") {
+    try {
+      Deno.cron("Keep-Alive", "*/12 * * * *", () => {
+        console.log("内部 Cron 触发：实例活跃中");
+      });
+    } catch (e) {
+      console.log("Deno.cron 启动失败，将依赖外部访问。");
+    }
   }
-} else {
-  console.log("当前环境不支持 Deno.cron，将跳过原生保活逻辑。");
+
+  // 2. 备用自请求逻辑 (针对 Deno 的定时器)
+  setInterval(() => {
+    if (PROJECT_URL) {
+      axios.get(PROJECT_URL)
+        .then(() => console.log("自请求保活成功"))
+        .catch(() => {});
+    }
+  }, 10 * 60 * 1000); // 10分钟一次
 }
