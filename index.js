@@ -624,8 +624,14 @@ app.listen(PORT, '0.0.0.0', () => {
     console.error('Error in startserver:', error);
   });
 });
-if (typeof Deno !== "undefined") {
-  Deno.cron("Keep-Alive", "*/10 * * * *", () => {
-    console.log("Deno 内部唤醒：进程保温中...");
-  });
+if (typeof Deno !== "undefined" && typeof Deno.cron === "function") {
+  try {
+    Deno.cron("Keep-Alive-Task", "*/10 * * * *", () => {
+      console.log("Deno Cron 触发：保持实例活跃");
+    });
+  } catch (e) {
+    console.error("Deno Cron 启动失败:", e.message);
+  }
+} else {
+  console.log("当前环境不支持 Deno.cron，将跳过原生保活逻辑。");
 }
