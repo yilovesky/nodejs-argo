@@ -1,4 +1,4 @@
-name: NK Auto Reboot (AppVeyor Branch)
+name: NK Auto Heartbeat
 
 on:
   schedule:
@@ -6,12 +6,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  reboot_task:
+  heartbeat:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger AppVeyor Build
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: appveyor # 确保修改的是 A 代码所在的分支
+
+      - name: Update Heartbeat File
         run: |
-          curl -v -X POST "https://ci.appveyor.com/api/account/baico/projects/baico/nodejs-argo/builds" \
-          -H "Authorization: Bearer ${{ secrets.APPVEYOR_API_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          -d "{\"branch\": \"appveyor\"}"
+          date > heartbeat.txt
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add heartbeat.txt
+          git commit -m "Heartbeat update: $(date)"
+          git push origin appveyor
