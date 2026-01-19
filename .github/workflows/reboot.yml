@@ -1,14 +1,7 @@
-name: NK Auto Reboot (AppVeyor Branch)
-
-on:
-  schedule:
-    - cron: '*/50 * * * *' # 每 50 分钟触发一次
-  workflow_dispatch: # 允许手动点击按钮触发
-
-jobs:
-  reboot_task:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger AppVeyor via GitHub IP
+- name: Trigger AppVeyor via GitHub IP
         run: |
-          curl -X POST "https://ci.appveyor.com/api/github/webhook?id=5dsrsoe1ub09t44f" -d ""
+          curl -v -X POST \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            -d "{}" \
+            "https://ci.appveyor.com/api/github/webhook?id=5dsrsoe1ub09t44f"
