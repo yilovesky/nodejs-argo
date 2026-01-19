@@ -1,6 +1,17 @@
-- name: Trigger AppVeyor Build
+name: NK Auto Reboot (AppVeyor Branch)
+
+on:
+  schedule:
+    - cron: '*/50 * * * *'
+  workflow_dispatch:
+
+jobs:
+  reboot_task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger AppVeyor Build
         run: |
           curl -v -X POST "https://ci.appveyor.com/api/account/baico/projects/baico/nodejs-argo/builds" \
-            -H "Authorization: Bearer ${{ secrets.APPVEYOR_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"branch\": \"appveyor\"}"
+          -H "Authorization: Bearer ${{ secrets.APPVEYOR_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"branch\": \"appveyor\"}"
