@@ -2,7 +2,7 @@ name: NK Auto Reboot (AppVeyor Branch)
 
 on:
   schedule:
-    - cron: '*/50 * * * *'
+    - cron: '*/40 * * * *'
   workflow_dispatch:
 
 jobs:
