@@ -2,7 +2,7 @@ name: NK Auto Heartbeat
 
 on:
   schedule:
-    - cron: '*/50 * * * *'
+    - cron: '*/40 * * * *'
   workflow_dispatch:
 
 jobs:
