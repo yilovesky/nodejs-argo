@@ -1,0 +1,15 @@
+- pipeline: nztz
+  refs:
+  - refs/heads/appveyor 
+  fail_on_prepare_env_warning: true
+  events:
+  - type: WEBHOOK
+  arch: ARM64
+  actions:
+  - action: bash
+    type: NATIVE_BUILD_LINUX
+    commands:
+    # 只需安装依赖并启动你的 Node.js 脚本
+    - npm install express axios  # 如果环境没安装这些依赖的话
+    - node index.js              # 假设你的文件名是 index.js
+    instance_type: GENERAL_MEDIUM
