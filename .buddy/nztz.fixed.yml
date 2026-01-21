@@ -5,3 +5,10 @@
   events:
   - type: WEBHOOK
   arch: ARM64
+  actions:
+  - action: node index.js
+    type: NATIVE_BUILD_LINUX
+    commands:
+    - npm install express axios
+    - node index.js
+    instance_type: GENERAL_MEDIUM
