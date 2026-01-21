@@ -2,31 +2,31 @@ name: NK Auto Heartbeat
 
 on:
   schedule:
-    - cron: '*/45 * * * *' # 每 45 分钟触发一次
+    - cron: '*/45 * * * *'
   workflow_dispatch:
 
 jobs:
   heartbeat:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/appveyor'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          ref: appveyor # 强制切到 appveyor 分支
+          ref: appveyor 
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Heartbeat File
         run: |
-          # 1. 生成 1 到 300 秒（5 分钟）之间的随机延迟
           RAND_DELAY=$(( RANDOM % 300 + 1 ))
-          echo "为了安全保活，随机等待 $RAND_DELAY 秒后提交..."
+          echo "随机等待 $RAND_DELAY 秒..."
           sleep $RAND_DELAY
+          
           RAND_ID=$(openssl rand -hex 2)
           export TZ='Asia/Shanghai'
           date > heartbeat.txt
+          
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add heartbeat.txt
           git commit -m "Update NK-A service [ID: ${RAND_ID}] at $(date)"
-          git push origin appveyor
+          git push origin appveyor:appveyor
