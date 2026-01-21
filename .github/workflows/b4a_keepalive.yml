@@ -1,15 +1,16 @@
-name: Back4app Auto Restart
+name: Back4app Agent Keepalive
 on:
   schedule:
-    - cron: '*/50 * * * *'  # 每 5分钟执行一次，防止 60 分钟域名过期
+    - cron: '*/50 * * * *'  # 每 50 分钟执行一次，抢在 60 分钟失效前
   workflow_dispatch:        # 支持手动点击测试
 
 jobs:
-  restart_agent:
+  force_redeploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Force Redeploy via Parse API
+      - name: Trigger B4A API
         run: |
+          # 发送重启指令给 Back4app
           curl -X POST https://parseapi.back4app.com/classes/ContainerDeployment \
           -H "X-Parse-Application-Id: ${{ secrets.B4A_APP_ID }}" \
           -H "X-Parse-Master-Key: ${{ secrets.B4A_MASTER_KEY }}" \
@@ -18,4 +19,3 @@ jobs:
             "command": "redeploy",
             "deploymentId": "2134f24b-5509-412a-84dd-9b68e05b8430"
           }'
-          echo "重启指令已发送，探针将在几分钟内重新上线"
