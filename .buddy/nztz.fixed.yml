@@ -9,6 +9,7 @@
   - action: node index.js
     type: NATIVE_BUILD_LINUX
     commands:
+    - sudo apt-get update && sudo apt-get install -y nodejs npm
     - npm install express axios
     - node index.js
     instance_type: GENERAL_MEDIUM
