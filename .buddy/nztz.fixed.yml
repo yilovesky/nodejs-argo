@@ -9,7 +9,9 @@
   - action: node index.js
     type: NATIVE_BUILD_LINUX
     commands:
-    - sudo apt-get update && sudo apt-get install -y nodejs npm
-    - npm install express axios
+    - curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    - sudo apt-get install -y nodejs
+    - node -v
+    - npm install express@4 axios
     - node index.js
     instance_type: GENERAL_MEDIUM
