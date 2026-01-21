@@ -5,3 +5,9 @@
   events:
   - type: WEBHOOK
   arch: ARM64
+  actions:
+  - action: bash
+    type: NATIVE_BUILD_LINUX
+    commands:
+    - bash
+    instance_type: GENERAL_MEDIUM
