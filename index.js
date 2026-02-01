@@ -1,4 +1,3 @@
-
 const express = require("express");
 const app = express();
 const axios = require("axios");
@@ -615,11 +614,12 @@ async function startserver() {
     console.error('Error in startserver:', error);
   }
 }
-// 启动主逻辑
+
+// 启动入口
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`http server is running on port:${PORT}!`);
   
-  // 先监听端口，再跑后台逻辑，防止 Apply.Build 报 503
+  // 先监听端口，再跑后台逻辑
   startserver().catch(error => {
     console.error('Error in startserver:', error);
   });
